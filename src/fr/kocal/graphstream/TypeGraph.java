@@ -5,7 +5,7 @@ package fr.kocal.graphstream;
  */
 public enum TypeGraph {
     CYCLE("Cycle"),
-    CHAINE("Chaine"),
+    CHAINE("Chaîne"),
     TORE("Tore"),
     GRILLE_CARRE("Grille carée"),
     ARBRE_UNAIRE("Arbre n-aire"),

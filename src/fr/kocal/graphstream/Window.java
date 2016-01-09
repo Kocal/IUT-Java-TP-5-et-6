@@ -6,6 +6,8 @@ import sun.awt.HorizBagLayout;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by Hugo Alliaume on 04/01/16.
@@ -66,7 +68,7 @@ public class Window extends JFrame {
     }
 
     private JPanel makePanelChoice() {
-        return (new JPanel() {
+        return new JPanel() {
 
             DefaultComboBoxModel<TypeGraph> comboBoxModel;
 
@@ -92,10 +94,44 @@ public class Window extends JFrame {
 
             private void makeButtonGenerate() {
                 this.buttonGenerate = new JButton("Générer");
+                this.buttonGenerate.addActionListener(new ActionListener() {
+
+                    @Override
+                    public void actionPerformed(ActionEvent actionEvent) {
+
+                        int params[] = new int[0];
+
+                        switch ((TypeGraph) comboBoxModel.getSelectedItem()) {
+                            case CYCLE:
+                            case CHAINE:
+                                params = ModalBox.renderForSummits(comboBoxModel);
+                                break;
+
+                            case TORE:
+
+                                break;
+
+                            case GRILLE_CARRE:
+                                break;
+
+                            case ARBRE_UNAIRE:
+                                break;
+
+                            case ALEATOIRE:
+                                break;
+
+                            default:
+                                System.out.println("???");
+                        }
+
+                        System.out.println(params);
+                    }
+                });
 
                 this.add(this.buttonGenerate, BorderLayout.SOUTH);
             }
-        }).make();
+
+        }.make();
     }
 
     private JPanel makePanelActions() {

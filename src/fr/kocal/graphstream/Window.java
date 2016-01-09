@@ -2,6 +2,8 @@ package fr.kocal.graphstream;
 
 import layout.TableLayout;
 import org.graphstream.graph.Graph;
+import org.graphstream.ui.swingViewer.View;
+import org.graphstream.ui.swingViewer.Viewer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,12 +15,18 @@ import java.awt.event.ActionListener;
  */
 public class Window extends JFrame {
 
+    Window window;
+
+    JPanel canvas;
+
     /**
      * Création d'un objet Window
      *
      * @param dimensions dimensions de la fenêtre
      */
     public Window(Dimension dimensions) {
+        this.window = this;
+
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setTitle("Graphstream");
         this.setSize(dimensions);
@@ -55,10 +63,6 @@ public class Window extends JFrame {
         JPanel panelActions = this.makePanelActions();
         JPanel panelAlgos = this.makePanelAlgos();
 
-        JPanel canvas = new JPanel();
-        canvas.setBackground(Color.RED);
-
-        this.add(canvas, "1, 1, 1, 4");
         this.add(panelChoice, "3, 1");
         this.add(panelActions, "3, 2");
         this.add(panelAlgos, "3, 3");
@@ -73,6 +77,8 @@ public class Window extends JFrame {
             JComboBox<TypeGraph> comboBox;
 
             JButton buttonGenerate;
+
+            View view;
 
             public JPanel make() {
                 this.setLayout(new BorderLayout());
@@ -126,8 +132,22 @@ public class Window extends JFrame {
                                 System.out.println("???");
                         }
 
-                        if(params != null) {
+                        if (params != null) {
                             Graph graph = GraphFactory.from(typeGraph, params);
+                            Viewer viewer;
+
+                            if (graph != null) {
+                                if (view != null) {
+                                    window.remove(view);
+                                }
+
+                                viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+                                view = viewer.addDefaultView(false);
+                                viewer.enableAutoLayout();
+
+                                window.add(view, "1, 1, 1, 4");
+                                window.revalidate();
+                            }
                         }
                     }
 

@@ -1,6 +1,9 @@
 package fr.kocal.graphstream;
 
+import org.graphstream.algorithm.generator.Generator;
+import org.graphstream.algorithm.generator.GridGenerator;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.implementations.SingleGraph;
 
 /**
  * Created by Hugo Alliaume on 09/01/16.
@@ -64,7 +67,18 @@ public class GraphFactory {
     }
 
     public static Graph generateSquareGridGraph(int size) {
-        return null;
+        Graph graph = new SingleGraph("grid");
+        Generator gen = new GridGenerator();
+
+        gen.addSink(graph);
+        gen.begin();
+
+        for (int i = 0; i < size; i++) {
+            gen.nextEvents();
+        }
+
+        gen.end();
+        return graph;
     }
 
     public static Graph generateTorusGraph(int size) {

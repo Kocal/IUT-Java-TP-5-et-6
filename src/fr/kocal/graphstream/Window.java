@@ -17,7 +17,9 @@ public class Window extends JFrame {
 
     Window window;
 
-    JPanel canvas;
+    Graph graph;
+
+    Viewer viewer;
 
     /**
      * Création d'un objet Window
@@ -133,8 +135,7 @@ public class Window extends JFrame {
                         }
 
                         if (params != null) {
-                            Graph graph = GraphFactory.from(typeGraph, params);
-                            Viewer viewer;
+                            graph = GraphFactory.from(typeGraph, params);
 
                             if (graph != null) {
                                 if (view != null) {

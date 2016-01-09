@@ -53,23 +53,14 @@ public class GraphFactory {
 
     public static Graph generateChainGraph(int summits) {
         Graph graph = new SingleGraph("Chain");
-        String nodes[] = new String[summits];
+        String root = "0";
 
-        for(int i = 0; i < summits - 1; i++) {
-            int j = i + 1;
-
-            if(nodes[i] == null) {
-                nodes[i] = Integer.toString(i);
-                graph.addNode(nodes[i]);
-            }
-
-            if(nodes[j] == null) {
-                nodes[j] = Integer.toString(j);
-                graph.addNode(nodes[j]);
-            }
-
-            graph.addEdge(nodes[i] + nodes[j], nodes[i], nodes[i]);
+        if(summits < 2) {
+            return graph;
         }
+
+        graph.addNode(root);
+        recursiveAddingNode(graph, root, summits - 2, 1);
 
         return graph;
     }
@@ -77,6 +68,10 @@ public class GraphFactory {
     public static Graph generateCycleGraph(int summits) {
         Graph graph = new SingleGraph("Chain");
         String nodes[] = new String[summits];
+
+        if(summits < 2) {
+            return graph;
+        }
 
         for(int i = 0; i < summits; i++) {
             int j = i + 1;
@@ -102,12 +97,22 @@ public class GraphFactory {
     }
 
     public static Graph generateNTreeGraph(int height, int childrenPerNodes) {
-        return null;
+        Graph graph = new SingleGraph("NTree");
+        String root = "0";
+
+        graph.addNode(root);
+        recursiveAddingNode(graph, root, height - 1, childrenPerNodes);
+
+        return graph;
     }
 
     public static Graph generateRandomGraph(int summits, int degrees) {
         Graph graph = new SingleGraph("Random");
         Generator gen = new RandomGenerator(degrees);
+
+        if(summits <= 0 || degrees <= 0) {
+            return graph;
+        }
 
         gen.addSink(graph);
         gen.begin();
@@ -149,5 +154,20 @@ public class GraphFactory {
 
         gen.end();
         return graph;
+    }
+
+    private static void recursiveAddingNode(Graph graph, String parent, int height, int childrenPerNodes) {
+
+        String nodes[] = new String[childrenPerNodes];
+
+        for(int i = 0; i < childrenPerNodes; i++) {
+            nodes[i] = parent + Integer.toString(i);
+            graph.addNode(nodes[i]);
+            graph.addEdge(parent + nodes[i], parent, nodes[i]);
+
+            if(height > 0) {
+                recursiveAddingNode(graph, nodes[i], height - 1, childrenPerNodes);
+            }
+        }
     }
 }

@@ -52,7 +52,26 @@ public class GraphFactory {
     }
 
     public static Graph generateChainGraph(int summits) {
-        return null;
+        Graph graph = new SingleGraph("Chain");
+        String nodes[] = new String[summits];
+
+        for(int i = 0; i < summits - 1; i++) {
+            int j = i + 1;
+
+            if(nodes[i] == null) {
+                nodes[i] = Integer.toString(i);
+                graph.addNode(nodes[i]);
+            }
+
+            if(nodes[j] == null) {
+                nodes[j] = Integer.toString(j);
+                graph.addNode(nodes[j]);
+            }
+
+            graph.addEdge(nodes[i] + nodes[j], nodes[i], nodes[i]);
+        }
+
+        return graph;
     }
 
     public static Graph generateCycleGraph(int summits) {

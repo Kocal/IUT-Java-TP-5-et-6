@@ -82,6 +82,17 @@ public class GraphFactory {
     }
 
     public static Graph generateTorusGraph(int size) {
-        return null;
+        Graph graph = new SingleGraph("grid");
+        Generator gen = new GridGenerator(false, true);
+
+        gen.addSink(graph);
+        gen.begin();
+
+        for (int i = 0; i < size; i++) {
+            gen.nextEvents();
+        }
+
+        gen.end();
+        return graph;
     }
 }

@@ -37,17 +37,17 @@ public class Window extends JFrame {
     }
 
     private void setupPanels() {
-        double border = 10;
+        double border = 5;
         double size[][] = {
-            { border, TableLayout.FILL, 200, border}, // colonnes
-            { // Lignes
-                border,
-                TableLayout.PREFERRED,
-                TableLayout.PREFERRED,
-                TableLayout.PREFERRED,
-                TableLayout.FILL,
-                border
-            }
+                {border, TableLayout.FILL, border, 200, border}, // colonnes
+                { // Lignes
+                        border,
+                        TableLayout.PREFERRED,
+                        TableLayout.PREFERRED,
+                        TableLayout.PREFERRED,
+                        TableLayout.FILL,
+                        border
+                }
         };
 
         this.setLayout(new TableLayout(size));
@@ -60,11 +60,10 @@ public class Window extends JFrame {
         canvas.setBackground(Color.RED);
 
         this.add(canvas, "1, 1, 1, 4");
-        this.add(panelChoice, "2, 1");
-        this.add(panelActions, "2, 2");
-        this.add(panelAlgos, "2, 3");
-        this.add(new JPanel(), "2, 4");
-
+        this.add(panelChoice, "3, 1");
+        this.add(panelActions, "3, 2");
+        this.add(panelAlgos, "3, 3");
+        this.add(new JPanel(), "3, 4");
     }
 
     private JPanel makePanelChoice() {
@@ -100,31 +99,33 @@ public class Window extends JFrame {
                     public void actionPerformed(ActionEvent actionEvent) {
 
                         int params[] = new int[0];
+                        TypeGraph typeGraph = (TypeGraph) comboBoxModel.getSelectedItem();
 
-                        switch ((TypeGraph) comboBoxModel.getSelectedItem()) {
+                        switch (typeGraph) {
                             case CYCLE:
                             case CHAINE:
                                 params = ModalBox.renderForSummits(comboBoxModel);
                                 break;
 
                             case TORE:
-
+                                params = ModalBox.renderForSize(comboBoxModel);
                                 break;
 
                             case GRILLE_CARRE:
+                                params = ModalBox.renderForSideSize(comboBoxModel);
                                 break;
 
                             case ARBRE_UNAIRE:
+                                params = ModalBox.renderForHeightAndChildren(comboBoxModel);
                                 break;
 
                             case ALEATOIRE:
+                                params = ModalBox.renderForSummitsAndDegrees(comboBoxModel);
                                 break;
 
                             default:
                                 System.out.println("???");
                         }
-
-                        System.out.println(params);
                     }
                 });
 

@@ -1,10 +1,8 @@
 package fr.kocal.graphstream;
 
 import layout.TableLayout;
-import sun.awt.HorizBagLayout;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -102,25 +100,25 @@ public class Window extends JFrame {
                         TypeGraph typeGraph = (TypeGraph) comboBoxModel.getSelectedItem();
 
                         switch (typeGraph) {
+                            case CHAIN:
                             case CYCLE:
-                            case CHAINE:
                                 params = ModalBox.renderForSummits(comboBoxModel);
                                 break;
 
-                            case TORE:
-                                params = ModalBox.renderForSize(comboBoxModel);
-                                break;
-
-                            case GRILLE_CARRE:
-                                params = ModalBox.renderForSideSize(comboBoxModel);
-                                break;
-
-                            case ARBRE_UNAIRE:
+                            case NTREE:
                                 params = ModalBox.renderForHeightAndChildren(comboBoxModel);
                                 break;
 
-                            case ALEATOIRE:
+                            case RANDOM:
                                 params = ModalBox.renderForSummitsAndDegrees(comboBoxModel);
+                                break;
+
+                            case SQUARE_GRID:
+                                params = ModalBox.renderForSideSize(comboBoxModel);
+                                break;
+
+                            case TORUS:
+                                params = ModalBox.renderForSize(comboBoxModel);
                                 break;
 
                             default:

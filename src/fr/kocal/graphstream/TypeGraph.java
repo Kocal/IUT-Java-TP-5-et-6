@@ -5,11 +5,11 @@ package fr.kocal.graphstream;
  */
 public enum TypeGraph {
     CYCLE("Cycle"),
-    CHAINE("Chaîne"),
-    TORE("Tore"),
-    GRILLE_CARRE("Grille carée"),
-    ARBRE_UNAIRE("Arbre n-aire"),
-    ALEATOIRE("Aléatoire");
+    CHAIN("Chaîne"),
+    TORUS("Tore"),
+    SQUARE_GRID("Grille carée"),
+    NTREE("Arbre n-aire"),
+    RANDOM("Aléatoire");
 
     String name;
 

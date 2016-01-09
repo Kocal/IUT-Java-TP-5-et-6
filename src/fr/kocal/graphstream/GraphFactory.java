@@ -2,6 +2,7 @@ package fr.kocal.graphstream;
 
 import org.graphstream.algorithm.generator.Generator;
 import org.graphstream.algorithm.generator.GridGenerator;
+import org.graphstream.algorithm.generator.RandomGenerator;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.SingleGraph;
 
@@ -63,7 +64,19 @@ public class GraphFactory {
     }
 
     public static Graph generateRandomGraph(int summits, int degrees) {
-        return null;
+        Graph graph = new SingleGraph("Random");
+        Generator gen = new RandomGenerator(degrees);
+
+        gen.addSink(graph);
+        gen.begin();
+
+        for (int i = 0; i < summits; i++) {
+            gen.nextEvents();
+        }
+
+        gen.end();
+
+        return graph;
     }
 
     public static Graph generateSquareGridGraph(int size) {

@@ -75,7 +75,30 @@ public class GraphFactory {
     }
 
     public static Graph generateCycleGraph(int summits) {
-        return null;
+        Graph graph = new SingleGraph("Chain");
+        String nodes[] = new String[summits];
+
+        for(int i = 0; i < summits; i++) {
+            int j = i + 1;
+
+            if(nodes[i] == null) {
+                nodes[i] = Integer.toString(i);
+                graph.addNode(nodes[i]);
+            }
+
+            if(j < summits && nodes[j] == null) {
+                nodes[j] = Integer.toString(j);
+                graph.addNode(nodes[j]);
+            }
+
+            if(j == summits) {
+                graph.addEdge(nodes[i] + nodes[0], nodes[i], nodes[0]);
+            } else {
+                graph.addEdge(nodes[i] + nodes[j], nodes[i], nodes[j]);
+            }
+        }
+
+        return graph;
     }
 
     public static Graph generateNTreeGraph(int height, int childrenPerNodes) {

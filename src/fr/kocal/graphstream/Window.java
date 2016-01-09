@@ -1,6 +1,7 @@
 package fr.kocal.graphstream;
 
 import layout.TableLayout;
+import org.graphstream.graph.Graph;
 
 import javax.swing.*;
 import java.awt.*;
@@ -124,7 +125,12 @@ public class Window extends JFrame {
                             default:
                                 System.out.println("???");
                         }
+
+                        if(params != null) {
+                            Graph graph = GraphFactory.from(typeGraph, params);
+                        }
                     }
+
                 });
 
                 this.add(this.buttonGenerate, BorderLayout.SOUTH);

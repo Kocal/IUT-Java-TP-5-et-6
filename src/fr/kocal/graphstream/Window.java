@@ -9,6 +9,7 @@ import com.itextpdf.text.pdf.codec.PngImage;
 import layout.TableLayout;
 import org.graphstream.algorithm.Kruskal;
 import org.graphstream.algorithm.Toolkit;
+import org.graphstream.algorithm.coloring.WelshPowell;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
@@ -311,11 +312,13 @@ public class Window extends JFrame {
                 this.buttonArbreCouvrant.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent actionEvent) {
-                        if (graph != null) {
-                            Kruskal kruskal = new Kruskal("ui.class", "intree", "notintree");
-                            kruskal.init(graph);
-                            kruskal.compute();
+                        if (graph == null) {
+                            return;
                         }
+
+                        Kruskal kruskal = new Kruskal("ui.class", "intree", "notintree");
+                        kruskal.init(graph);
+                        kruskal.compute();
                     }
                 });
                 this.add(this.buttonArbreCouvrant, BorderLayout.NORTH);
@@ -323,6 +326,18 @@ public class Window extends JFrame {
 
             private void makeButtonWelshPowell() {
                 this.buttonWelshPowell = new JButton("Welsh Powell");
+                this.buttonWelshPowell.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent actionEvent) {
+                        if (graph == null) {
+                            return;
+                        }
+
+                        WelshPowell wp = new WelshPowell("color");
+                        wp.init(graph);
+                        wp.compute();
+                    }
+                });
                 this.add(this.buttonWelshPowell, BorderLayout.CENTER);
             }
 

@@ -1,7 +1,16 @@
 package fr.kocal.graphstream;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.codec.PngImage;
 import layout.TableLayout;
+import org.graphstream.algorithm.Toolkit;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
+import org.graphstream.stream.file.FileSinkImages;
 import org.graphstream.ui.swingViewer.View;
 import org.graphstream.ui.swingViewer.Viewer;
 
@@ -9,6 +18,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
 
 /**
  * Created by Hugo Alliaume on 04/01/16.
@@ -20,6 +32,8 @@ public class Window extends JFrame {
     Graph graph;
 
     Viewer viewer;
+
+    DefaultComboBoxModel<TypeGraph> comboBoxModel;
 
     /**
      * Création d'un objet Window
@@ -74,8 +88,6 @@ public class Window extends JFrame {
     private JPanel makePanelChoice() {
         return new JPanel() {
 
-            DefaultComboBoxModel<TypeGraph> comboBoxModel;
-
             JComboBox<TypeGraph> comboBox;
 
             JButton buttonGenerate;
@@ -92,8 +104,8 @@ public class Window extends JFrame {
             }
 
             private void makeComboBox() {
-                this.comboBoxModel = new DefaultComboBoxModel(TypeGraph.values());
-                this.comboBox = new JComboBox<TypeGraph>(this.comboBoxModel);
+                comboBoxModel = new DefaultComboBoxModel(TypeGraph.values());
+                this.comboBox = new JComboBox<TypeGraph>(comboBoxModel);
 
                 this.add(this.comboBox, BorderLayout.NORTH);
             }
@@ -163,11 +175,19 @@ public class Window extends JFrame {
     private JPanel makePanelActions() {
         return (new JPanel() {
 
+            JPanel self;
+
+            JFileChooser fc;
+
             JButton buttonToPDF;
 
             JButton buttonPonderer;
 
             public JPanel make() {
+
+                this.fc = new JFileChooser();
+                this.self = this;
+
                 this.setLayout(new BorderLayout());
                 this.setBorder(BorderFactory.createTitledBorder("Actions"));
                 this.makeButtonToPDF();
@@ -178,6 +198,67 @@ public class Window extends JFrame {
 
             private void makeButtonToPDF() {
                 this.buttonToPDF = new JButton("Exporter en PDF");
+                this.buttonToPDF.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent actionEvent) {
+                        // La solution avec un OutputStream ne fonctionne pas encore (méthode pas implémentée :-))
+                        //ByteArrayOutputStream stream = null;
+
+                        if (graph == null) {
+                            return;
+                        }
+
+                        int returnVal = fc.showSaveDialog(self);
+
+                        if (returnVal == JFileChooser.APPROVE_OPTION) {
+                            try {
+
+                                FileSinkImages pic = new FileSinkImages(FileSinkImages.OutputType.PNG, FileSinkImages.Resolutions.VGA);
+                                pic.setLayoutPolicy(FileSinkImages.LayoutPolicy.COMPUTED_FULLY_AT_NEW_IMAGE);
+
+                                File file = fc.getSelectedFile();
+                                String pdfFilename = file.getAbsolutePath();
+                                String imageFilename = pdfFilename + ".png";
+
+                                //pic.writeAll(graph, stream);
+                                //Image png = PngImage.getImage(stream.toByteArray());
+
+                                pic.writeAll(graph, imageFilename);
+                                Image png = PngImage.getImage(imageFilename);
+
+                                // Génération sur le PDF
+
+                                Document document = new Document();
+                                PdfWriter pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(pdfFilename));
+
+                                ArrayList<Node> degrees = Toolkit.degreeMap(graph);
+
+                                Font fontTitle = new Font(Font.getFamily("TIMES_ROMAN"), 18, Font.BOLD);
+                                Font fontParagraph = new Font(Font.getFamily("TIMES_ROMAN"), 14);
+
+                                document.open();
+
+                                document.addTitle("Génération de graphique");
+                                document.addAuthor(System.getProperty("user.name"));
+                                document.addCreator(System.getProperty("user.name"));
+
+                                document.add(new Paragraph("Informations sur le graphe", fontTitle));
+                                document.add(new Paragraph("Nom : " + comboBoxModel.getSelectedItem().toString(), fontParagraph));
+                                document.add(new Paragraph("Degré moyen : " + Toolkit.averageDegree(graph) + "deg", fontParagraph));
+                                document.add(new Paragraph("Degré maxi : " + degrees.get(degrees.size() - 1) + "deg", fontParagraph));
+                                document.add(new Paragraph("Degré mini : " + degrees.get(0) + "deg", fontParagraph));
+                                document.add(new Paragraph("Diamètre : " + Toolkit.diameter(graph) + "px", fontParagraph));
+                                document.add(png);
+
+                                document.close();
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }
+                });
                 this.add(this.buttonToPDF, BorderLayout.NORTH);
             }
 
@@ -208,7 +289,7 @@ public class Window extends JFrame {
             }
 
             private void makeButtonArbreCourant() {
-                this.buttonArbreCourant = new JButton("Exporter en PDF");
+                this.buttonArbreCourant = new JButton("Arbre courant");
                 this.add(this.buttonArbreCourant, BorderLayout.NORTH);
             }
 

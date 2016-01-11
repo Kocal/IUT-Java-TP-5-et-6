@@ -248,8 +248,8 @@ public class Window extends JFrame {
                                 document.add(new Paragraph("Informations sur le graphe", fontTitle));
                                 document.add(new Paragraph("Nom : " + comboBoxModel.getSelectedItem().toString(), fontParagraph));
                                 document.add(new Paragraph("Degré moyen : " + Toolkit.averageDegree(graph) + "deg", fontParagraph));
-                                document.add(new Paragraph("Degré maxi : " + degrees.get(degrees.size() - 1) + "deg", fontParagraph));
-                                document.add(new Paragraph("Degré mini : " + degrees.get(0) + "deg", fontParagraph));
+                                document.add(new Paragraph("Degré maxi : " + degrees.get(degrees.size() - 1).getDegree() + "deg", fontParagraph));
+                                document.add(new Paragraph("Degré mini : " + degrees.get(0).getDegree() + "deg", fontParagraph));
                                 document.add(new Paragraph("Diamètre : " + Toolkit.diameter(graph) + "px", fontParagraph));
                                 document.add(png);
 
@@ -314,7 +314,7 @@ public class Window extends JFrame {
 
             private void makeButtonArbreCouvrant() {
                 this.buttonArbreCouvrant = new JButton("Arbre couvrant");
-                
+
                 this.buttonArbreCouvrant.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent actionEvent) {
@@ -361,7 +361,7 @@ public class Window extends JFrame {
             private void makeButtonDSat() {
                 this.buttonDSat = new JButton("D Sat");
                 this.labelDSat = new JLabel(" ");
-
+                
                 this.add(this.buttonDSat, "1, 3");
                 this.add(this.labelDSat, "2, 3");
             }

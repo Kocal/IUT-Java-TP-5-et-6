@@ -362,6 +362,20 @@ public class Window extends JFrame {
                 this.buttonDSat = new JButton("D Sat");
                 this.labelDSat = new JLabel(" ");
 
+                this.buttonDSat.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent actionEvent) {
+                        if(graph == null) {
+                            return;
+                        }
+
+                        DSat dsat = new DSat();
+                        dsat.init(graph);
+                        dsat.compute();
+
+                    }
+                });
+
                 this.add(this.buttonDSat, "1, 3");
                 this.add(this.labelDSat, "2, 3");
             }

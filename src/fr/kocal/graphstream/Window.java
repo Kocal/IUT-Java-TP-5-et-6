@@ -7,6 +7,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.codec.PngImage;
 import layout.TableLayout;
+import org.graphstream.algorithm.Kruskal;
 import org.graphstream.algorithm.Toolkit;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
@@ -289,7 +290,7 @@ public class Window extends JFrame {
     private JPanel makePanelAlgos() {
         return (new JPanel() {
 
-            JButton buttonArbreCourant;
+            JButton buttonArbreCouvrant;
 
             JButton buttonWelshPowell;
 
@@ -298,16 +299,26 @@ public class Window extends JFrame {
             public JPanel make() {
                 this.setLayout(new BorderLayout());
                 this.setBorder(BorderFactory.createTitledBorder("Algorithme"));
-                this.makeButtonArbreCourant();
+                this.makeButtonArbreCouvrant();
                 this.makeButtonWelshPowell();
                 this.makeButtonDSat();
 
                 return this;
             }
 
-            private void makeButtonArbreCourant() {
-                this.buttonArbreCourant = new JButton("Arbre courant");
-                this.add(this.buttonArbreCourant, BorderLayout.NORTH);
+            private void makeButtonArbreCouvrant() {
+                this.buttonArbreCouvrant = new JButton("Arbre couvrant");
+                this.buttonArbreCouvrant.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent actionEvent) {
+                        if (graph != null) {
+                            Kruskal kruskal = new Kruskal("ui.class", "intree", "notintree");
+                            kruskal.init(graph);
+                            kruskal.compute();
+                        }
+                    }
+                });
+                this.add(this.buttonArbreCouvrant, BorderLayout.NORTH);
             }
 
             private void makeButtonWelshPowell() {

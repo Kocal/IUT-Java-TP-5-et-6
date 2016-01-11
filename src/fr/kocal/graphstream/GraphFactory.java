@@ -48,6 +48,10 @@ public class GraphFactory {
                 graph = null;
         }
 
+        if (graph != null) {
+            bindCSS(graph);
+        }
+
         return graph;
     }
 
@@ -55,7 +59,8 @@ public class GraphFactory {
         Graph graph = new SingleGraph("Chain");
         String root = "0";
 
-        if(summits < 2) {
+
+        if (summits < 2) {
             return graph;
         }
 
@@ -69,24 +74,24 @@ public class GraphFactory {
         Graph graph = new SingleGraph("Chain");
         String nodes[] = new String[summits];
 
-        if(summits < 2) {
+        if (summits < 3) {
             return graph;
         }
 
-        for(int i = 0; i < summits; i++) {
+        for (int i = 0; i < summits; i++) {
             int j = i + 1;
 
-            if(nodes[i] == null) {
+            if (nodes[i] == null) {
                 nodes[i] = Integer.toString(i);
                 graph.addNode(nodes[i]);
             }
 
-            if(j < summits && nodes[j] == null) {
+            if (j < summits && nodes[j] == null) {
                 nodes[j] = Integer.toString(j);
                 graph.addNode(nodes[j]);
             }
 
-            if(j == summits) {
+            if (j == summits) {
                 graph.addEdge(nodes[i] + nodes[0], nodes[i], nodes[0]);
             } else {
                 graph.addEdge(nodes[i] + nodes[j], nodes[i], nodes[j]);
@@ -110,7 +115,7 @@ public class GraphFactory {
         Graph graph = new SingleGraph("Random");
         Generator gen = new RandomGenerator(degrees);
 
-        if(summits <= 0 || degrees <= 0) {
+        if (summits <= 0 || degrees <= 0) {
             return graph;
         }
 
@@ -160,14 +165,21 @@ public class GraphFactory {
 
         String nodes[] = new String[childrenPerNodes];
 
-        for(int i = 0; i < childrenPerNodes; i++) {
+        for (int i = 0; i < childrenPerNodes; i++) {
             nodes[i] = parent + Integer.toString(i);
             graph.addNode(nodes[i]);
             graph.addEdge(parent + nodes[i], parent, nodes[i]);
 
-            if(height > 0) {
+            if (height > 0) {
                 recursiveAddingNode(graph, nodes[i], height - 1, childrenPerNodes);
             }
         }
+    }
+
+    private static void bindCSS(Graph graph) {
+        String css = "edge .notintree {size:1px;fill-color:gray;} " +
+                "edge .intree {size:3px;fill-color:black;}";
+
+        graph.addAttribute("ui.stylesheet", css);
     }
 }

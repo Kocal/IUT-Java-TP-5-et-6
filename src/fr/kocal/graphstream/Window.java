@@ -336,6 +336,13 @@ public class Window extends JFrame {
                         WelshPowell wp = new WelshPowell("color");
                         wp.init(graph);
                         wp.compute();
+
+                        System.out.println("Nombre chromatique : "+wp.getChromaticNumber());
+
+                        for(Node n : graph){
+                            System.out.println("Node "+n.getId()+ " : color " +n.getAttribute("color"));
+                            n.setAttribute("ui.class", "color" + n.getAttribute("color"));
+                        }
                     }
                 });
                 this.add(this.buttonWelshPowell, BorderLayout.CENTER);

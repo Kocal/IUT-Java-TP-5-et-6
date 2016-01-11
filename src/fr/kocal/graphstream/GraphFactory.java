@@ -177,8 +177,18 @@ public class GraphFactory {
     }
 
     private static void bindCSS(Graph graph) {
+        int colors = 16;
+
         String css = "edge .notintree {size:1px;fill-color:gray;} " +
                 "edge .intree {size:3px;fill-color:black;}";
+
+        for(int i = 0; i < colors; i++) {
+            int r = (int) (Math.random() * 256);
+            int v = (int) (Math.random() * 256);
+            int b = (int) (Math.random() * 256);
+
+            css += " node.color" + i + " { fill-color: rgb(" + r + "," + v + "," + b + "); }";
+        }
 
         graph.addAttribute("ui.stylesheet", css);
     }

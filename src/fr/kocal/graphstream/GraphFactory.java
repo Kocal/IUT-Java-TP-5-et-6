@@ -190,6 +190,8 @@ public class GraphFactory {
             css += " node.color" + i + " { fill-color: rgb(" + r + "," + v + "," + b + "); }";
         }
 
+        css += "edge { text-color: red; text-style: bold; }";
+
         graph.addAttribute("ui.stylesheet", css);
     }
 }

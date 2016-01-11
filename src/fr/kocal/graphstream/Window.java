@@ -291,14 +291,19 @@ public class Window extends JFrame {
     private JPanel makePanelAlgos() {
         return (new JPanel() {
 
+            double size[][] = {{5, TableLayout.FILL, TableLayout.PREFERRED, 5},
+                    {5, TableLayout.FILL, TableLayout.FILL, TableLayout.FILL, 5}};
+
             JButton buttonArbreCouvrant;
 
             JButton buttonWelshPowell;
+            JLabel labelWelshPowell;
 
             JButton buttonDSat;
+            JLabel labelDSat;
 
             public JPanel make() {
-                this.setLayout(new BorderLayout());
+                this.setLayout(new TableLayout(size));
                 this.setBorder(BorderFactory.createTitledBorder("Algorithme"));
                 this.makeButtonArbreCouvrant();
                 this.makeButtonWelshPowell();
@@ -309,6 +314,7 @@ public class Window extends JFrame {
 
             private void makeButtonArbreCouvrant() {
                 this.buttonArbreCouvrant = new JButton("Arbre couvrant");
+                
                 this.buttonArbreCouvrant.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent actionEvent) {
@@ -321,11 +327,13 @@ public class Window extends JFrame {
                         kruskal.compute();
                     }
                 });
-                this.add(this.buttonArbreCouvrant, BorderLayout.NORTH);
+                this.add(this.buttonArbreCouvrant, "1, 1");
             }
 
             private void makeButtonWelshPowell() {
                 this.buttonWelshPowell = new JButton("Welsh Powell");
+                this.labelWelshPowell = new JLabel(" ");
+
                 this.buttonWelshPowell.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent actionEvent) {
@@ -337,20 +345,25 @@ public class Window extends JFrame {
                         wp.init(graph);
                         wp.compute();
 
-                        System.out.println("Nombre chromatique : "+wp.getChromaticNumber());
+                        labelWelshPowell.setText(Integer.toString(wp.getChromaticNumber()));
 
-                        for(Node n : graph){
-                            System.out.println("Node "+n.getId()+ " : color " +n.getAttribute("color"));
+                        for (Node n : graph) {
+                            System.out.println("Node " + n.getId() + " : color " + n.getAttribute("color"));
                             n.setAttribute("ui.class", "color" + n.getAttribute("color"));
                         }
                     }
                 });
-                this.add(this.buttonWelshPowell, BorderLayout.CENTER);
+
+                this.add(this.buttonWelshPowell, "1, 2");
+                this.add(this.labelWelshPowell, "2, 2");
             }
 
             private void makeButtonDSat() {
                 this.buttonDSat = new JButton("D Sat");
-                this.add(this.buttonDSat, BorderLayout.SOUTH);
+                this.labelDSat = new JLabel(" ");
+
+                this.add(this.buttonDSat, "1, 3");
+                this.add(this.labelDSat, "2, 3");
             }
 
         }).make();

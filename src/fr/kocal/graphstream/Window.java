@@ -8,6 +8,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.codec.PngImage;
 import layout.TableLayout;
 import org.graphstream.algorithm.Toolkit;
+import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.stream.file.FileSinkImages;
@@ -264,6 +265,22 @@ public class Window extends JFrame {
 
             private void makeButtonPonderer() {
                 this.buttonPonderer = new JButton("Pondérer");
+                this.buttonPonderer.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent actionEvent) {
+
+                        if (graph == null) {
+                            return;
+                        }
+
+                        for (Edge edge : graph.getEachEdge()) {
+                            double weight = Math.round(Math.random() * 101);
+
+                            edge.setAttribute("weight", weight);
+                            edge.setAttribute("ui.label", weight);
+                        }
+                    }
+                });
                 this.add(this.buttonPonderer, BorderLayout.SOUTH);
             }
         }).make();
